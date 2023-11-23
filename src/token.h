@@ -1,7 +1,10 @@
 #pragma once
 
+#include <vector>
 #include <sstream>
 #include "log.h"
+
+class VecrtorSize: public std::exception {};
 
 enum Type {T_CONST, T_VECTOR, T_VAR, T_OPER, T_OP, T_CP, T_EOEQ};
 
@@ -69,6 +72,31 @@ public:
     const char* str() { return name.c_str(); }
 private:
     std::string name;
+};
+
+class Vector: public MemberToken, public Member<std::vector<double>> {
+public:
+    Vector(const std::vector<double>& val) { type=T_VECTOR; value=std::move(val); }
+    Vector(const Vector& vec):Vector(vec.value) {}
+    ~Vector() {}
+
+    const char* str() { std::stringstream buf; buf<<'{'; for (size_t i=0; i<value.size(); i++) buf<<value[i]<<(i==value.size()-1? '}': ','); buf_str=buf.str(); return buf_str.c_str(); }
+
+    friend Vector operator+(const Vector& A, const Vector& B);
+    friend Vector operator+(Const A, const Vector& B);
+    friend Vector operator+(const Vector& A, Const B) { return B+A; }
+    friend Vector operator-(const Vector& A) { std::vector<double> ret(A.value.size()); for (size_t i=0; i<A.value.size(); i++) ret[i]=-A.value[i]; return ret; }
+    friend Vector operator-(const Vector& A, const Vector& B);
+    friend Vector operator-(Const A, const Vector& B);
+    friend Vector operator-(const Vector& A, Const B);
+    friend Const operator*(const Vector& A, const Vector& B);
+    friend Vector operator*(Const A, const Vector& B) ;
+    friend Vector operator*(const Vector& A, Const B) { return B*A; }
+    friend Const operator/(const Vector& A, const Vector& B) { return {0.0/0.0}; }
+    friend Vector operator/(Const A, const Vector& B);
+    friend Vector operator/(const Vector& A, Const B);
+private:
+    std::string buf_str;
 };
 
 class Plus: public OperatorToken {

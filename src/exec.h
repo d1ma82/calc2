@@ -41,7 +41,7 @@ private:
 
     void assign(Token* A, Token* B) { var_map[dynamic_cast<Variable*>(A)->str()]= (MemberToken*) B; }
 
-    template<typename Ta, typename Tb, typename Tr> void exec_vec_spec1(Token A, Token B, char operation) {
+    template<typename Ta, typename Tb, typename Tr> void exec_vec_spec1(Token* A, Token* B, char operation) {
 
         switch (operation) {
             case '+': vec.push_back(new Tr(*(dynamic_cast<Ta*>(A)) + *(dynamic_cast<Tb*>(B)))); stack.push(*vec.rbegin()); break;
@@ -49,7 +49,7 @@ private:
         }        
     }
 
-    template<typename Ta, typename Tb, typename Tr> void exec_vec_spec2(Token A, Token B, char operation) {
+    template<typename Ta, typename Tb, typename Tr> void exec_vec_spec2(Token* A, Token* B, char operation) {
 
         switch (operation) {
             case '*': vec.push_back(new Tr(*(dynamic_cast<Ta*>(A)) * *(dynamic_cast<Tb*>(B)))); stack.push(*vec.rbegin()); break;

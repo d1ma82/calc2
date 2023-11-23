@@ -26,7 +26,7 @@ public:
                 el->type == T_OP || 
                 el->type == T_CP || 
                 el->type == T_EOEQ) continue;
-            else delete el; 
+            else delete el;
         tokens.clear();
         it=0; 
     }

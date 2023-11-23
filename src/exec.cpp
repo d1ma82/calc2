@@ -10,28 +10,28 @@ void Executor::exec_internal(Token* A, Token* B, char operation) {
         case T_CONST:   
             if (!A) exec_unar<Const>(*(dynamic_cast<Const*>(B)), operation);
             else if (A->type==T_CONST) exec_dbl<Const, Const, Const>(A, B, operation);
-            //else if (A->type==T_VECTOR) dbl<Vector, Const, Vector>(A, B, operation);
+            else if (A->type==T_VECTOR) exec_dbl<Vector, Const, Vector>(A, B, operation);
             else if (A->type==T_VAR) {
 
                     if (operation=='=') assign(A, B); 
                     else exec_internal(var_map[dynamic_cast<Variable*>(A)->str()], B, operation);
             }
             break;
-        /*case T_VECTOR:
-            if (!A) unar<Vector>(*(dynamic_cast<Vector*>(B)), operation);
-            else if (A->type==T_CONST) dbl<Const, Vector, Vector>(A, B, operation);
+        case T_VECTOR:
+            if (!A) exec_unar<Vector>(*(dynamic_cast<Vector*>(B)), operation);
+            else if (A->type==T_CONST) exec_dbl<Const, Vector, Vector>(A, B, operation);
             else if (A->type==T_VAR) {
 
-                    if (operation=='=')  {assign(A, B); }
-                    else calc_internal(deref(dynamic_cast<Variable*>(A)->str()), B, operation); 
+                    if (operation=='=') assign(A, B);
+                    else exec_internal(var_map[dynamic_cast<Variable*>(A)->str()], B, operation); 
             }
             else if (A->type==T_VECTOR) {
                 switch (operation) {
-                    case '+': case '-': vec_spec_1<Vector, Vector, Vector>(A, B, operation); break;
-                    case '*': case '/': vec_spec_2<Vector, Vector, Const>(A, B, operation); break;
+                    case '+': case '-': exec_vec_spec1<Vector, Vector, Vector>(A, B, operation); break;
+                    case '*': case '/': exec_vec_spec2<Vector, Vector, Const>(A, B, operation); break;
                 }                
             }
-            break;*/
+            break;
         case T_VAR:
             if (!A) exec_internal(nullptr, var_map[dynamic_cast<Variable*>(B)->str()], operation);
             else exec_internal(A, var_map[dynamic_cast<Variable*>(B)->str()], operation);

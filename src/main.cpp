@@ -66,7 +66,8 @@ static void loop() {
         catch (Quit) { ret=0; return; }
         catch (ParenthesisException) { ret= -1; } 
         catch (SyntaxException) { ret = -2; }
-        catch (InvalidToken) { ret = -3; }    
+        catch (InvalidToken) { ret = -3; }
+        catch (VecrtorSize) { ret = -4; }
         catch (std::exception const &e) {
             LOGE("%s", e.what())
             ret = -10;
