@@ -136,7 +136,7 @@ void Synt::init_table() {
 //               c  vecP    var   +   -   *   /   ;  (    )    =    
 //            E cP  vecP   varK      -E           ;  (E                                
 //            P                   +E -E   *E  /E  ;       )P      
-//            K                   +E -E   *E  /E  ;  (E   )P   =E
+//            K                   +E -E   *E  /E  ;       )P   =E
     table[E][W_CONST]           = {W_P, W_CONST};
     table[E][W_VECTOR]          = {W_P, W_VECTOR};
     table[E][W_VAR]             = {W_K, W_VAR};
@@ -153,7 +153,6 @@ void Synt::init_table() {
     table[K][W_MINUS]           = {W_E, W_MINUS};
     table[K][W_DIV]             = {W_E, W_DIV};
     table[K][W_PRODUCT]         = {W_E, W_PRODUCT};
-    table[K][W_OPEN_PARENTH]    = {W_E, W_OPEN_PARENTH};
     table[K][W_CLOSE_PARENTH]   = {W_P, W_CLOSE_PARENTH};
     table[K][W_ASSIGN]          = {W_E, W_ASSIGN};
     table[K][W_END_EQUATION]    = {W_END_EQUATION};
