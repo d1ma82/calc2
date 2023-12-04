@@ -22,11 +22,7 @@ public:
     size_t size() { return tokens.size(); }
     void clear() {  
         for (auto el: tokens) 
-            if (el->type == T_OPER ||
-                el->type == T_OP || 
-                el->type == T_CP || 
-                el->type == T_EOEQ) continue;
-            else delete el;
+            if (el->type >= T_PLUS && el->type <= T_EOEQ) continue; else delete el;
         tokens.clear();
         it=0; 
     }

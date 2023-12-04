@@ -63,7 +63,9 @@ void Executor::read() {
         
         switch (token->type) {
             case T_CONST: case T_VECTOR: case T_VAR:  stack.push(token); break;
-            case T_OPER: do_exec(dynamic_cast<OperatorToken*>(token)->get(), 
+            
+            case T_PLUS: case T_MINUS: case T_PRODUCT: case T_DIV: case T_ASSIGN:
+                do_exec(dynamic_cast<OperatorToken*>(token)->get(), 
                                  dynamic_cast<OperatorToken*>(token)->is_unar()); break;
             default: break;
         }

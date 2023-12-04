@@ -42,23 +42,18 @@ static std::string rule_to_string(Rule rule) {
 static Word token_to_word(Token* token) {
 
     switch (token->type) {
-        case T_CONST:  return W_CONST;
-        case T_VECTOR: return W_VECTOR;
-        case T_VAR:    return W_VAR; 
-        case T_OPER: {
-            switch (dynamic_cast<OperatorToken*>(token)->get()) {
-                case '+': return W_PLUS;
-                case '-': return W_MINUS;   
-                case '*': return W_PRODUCT;   
-                case '/': return W_DIV;
-                case '=': return W_ASSIGN;                
-                default: return W_UDEFINED;
-            }
-        }
-        case T_OP:  return W_OPEN_PARENTH;
-        case T_CP:  return W_CLOSE_PARENTH;
-        case T_EOEQ: return W_END_EQUATION;
-        default:    return W_UDEFINED;
+        case T_CONST:   return W_CONST;
+        case T_VECTOR:  return W_VECTOR;
+        case T_VAR:     return W_VAR; 
+        case T_PLUS:    return W_PLUS;
+        case T_MINUS:   return W_MINUS;
+        case T_PRODUCT: return W_PRODUCT;
+        case T_DIV:     return W_DIV;
+        case T_ASSIGN:  return W_ASSIGN;
+        case T_OP:      return W_OPEN_PARENTH;
+        case T_CP:      return W_CLOSE_PARENTH;
+        case T_EOEQ:    return W_END_EQUATION;
+        default:        return W_UDEFINED;
     }
 }
 
@@ -116,13 +111,11 @@ bool Synt::check(Token* token) {
                 switch (token->type) {
                     case T_OP: cnt_op++; break;
                     case T_CP: cnt_cp++; break;
-                    case T_OPER: {
-
-                        OperatorToken* op = dynamic_cast<OperatorToken*>(token);
-                        if (op->get()=='-' && (prev==nullptr || prev->type==T_OP || prev->type==T_OPER)) {
-                            op->set_unar();
+                    case T_MINUS:
+                        if ((prev==nullptr || prev->type==T_OP || (prev->type>=T_PLUS && prev->type<=T_ASSIGN))) {
+                            
+                            dynamic_cast<Minus*>(token)->set_unar();
                         }
-                    }
                     default: break;
                 }
                 return word==token_to_word(token);

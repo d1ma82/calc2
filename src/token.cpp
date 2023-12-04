@@ -8,10 +8,11 @@ const char* type_to_str(Type type) {
         case T_CONST:   return "const";
         case T_VECTOR:  return "vector";
         case T_VAR:     return "variable";
-        case T_OPER:    return "operator";
+        case T_PLUS: case T_MINUS: case T_PRODUCT: case T_DIV: case T_ASSIGN:  return "operator";
         case T_OP:      return "open par";
         case T_CP:      return "close par";
-        case T_EOEQ:    return "end of equation";    
+        case T_EOEQ:    return "end of equation";   
+        default: return "undefined"; 
     }
 }
 

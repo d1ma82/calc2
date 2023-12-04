@@ -6,7 +6,7 @@
 
 class VecrtorSize: public std::exception {};
 
-enum Type {T_CONST, T_VECTOR, T_VAR, T_OPER, T_OP, T_CP, T_EOEQ};
+enum Type {T_CONST, T_VECTOR, T_VAR, T_PLUS, T_MINUS, T_PRODUCT, T_DIV, T_ASSIGN, T_OP, T_CP, T_EOEQ};
 
 class Token {
 public:
@@ -54,7 +54,7 @@ public:
     Const(double val){ type=T_CONST; value=val; }
     Const (const Const& val):Const(val.value) {}
     
-    const char* str() { snprintf(buf, sizeof(double)+1, "%f%c", value, '\0'); return buf; }
+    const char* str() { return snprintf(buf, sizeof(double)+1, "%f%c", value, '\0')<0? "NA": buf; }
 
     friend Const operator+(Const A, Const B) { return {A.value+B.value}; }
     friend Const operator-(Const A, Const B) { return {A.value-B.value}; }
@@ -101,27 +101,27 @@ private:
 
 class Plus: public OperatorToken {
 public:
-    Plus() { type=T_OPER; symbol='+'; }
+    Plus() { type=T_PLUS; symbol='+'; }
 };
 
 class Minus: public OperatorToken {
 public:
-    Minus() { type= T_OPER; symbol='-'; }
+    Minus() { type= T_MINUS; symbol='-'; }
 };
 
 class Multiply: public OperatorToken {
 public:
-    Multiply() { type=T_OPER; symbol='*'; }
+    Multiply() { type=T_PRODUCT; symbol='*'; }
 };
 
 class Division: public OperatorToken {
 public:
-    Division() { type=T_OPER; symbol='/'; }
+    Division() { type=T_DIV; symbol='/'; }
 };
 
 class Assign: public OperatorToken {
 public:
-    Assign() { type=T_OPER; symbol='=';}
+    Assign() { type=T_ASSIGN; symbol='=';}
 };
 
 class OpenParenthesis: public OperatorToken {
