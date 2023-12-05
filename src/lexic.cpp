@@ -52,7 +52,8 @@ void TokenStream::read() {
             buffer.clear();
         }
         else if (operators.find(ch) != operators.end()) {   
-
+            
+            if (ch=='-' && (prev==T_UNDEF || prev==T_OP || (prev>=T_PLUS && prev<=T_ASSIGN))) ch='u';
             tokens.push_back((Token*)&operators.at(ch));
         }        
         else if (service.find(ch) != service.end()) {
@@ -70,6 +71,7 @@ void TokenStream::read() {
         else {
             LOGE("Invalid token: %c\n", ch);
             throw InvalidToken();    
-        }                
+        }
+        prev = tokens.empty()? T_UNDEF: (*tokens.crbegin())->type; 
     }
 }

@@ -25,7 +25,6 @@ public:
     void read();
 private:
     Stream* input {nullptr};
-    Token* prev {nullptr};
     int cnt_op {0}, cnt_cp {0};         // count open close parenthesis
     Rule begin;                         // Initial position of rule stack, must be W_E
     std::stack<Rule> rules;

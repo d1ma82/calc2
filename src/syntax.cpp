@@ -67,7 +67,6 @@ void Synt::read() {
     while (!input->eof()) {
 
       bool result = check(token);
-      prev=token;
       if (!result) {LOGE("Syntax error\n") throw SyntaxException();}
       *input>>token;
     }
@@ -111,11 +110,6 @@ bool Synt::check(Token* token) {
                 switch (token->type) {
                     case T_OP: cnt_op++; break;
                     case T_CP: cnt_cp++; break;
-                    case T_MINUS:
-                        if ((prev==nullptr || prev->type==T_OP || (prev->type>=T_PLUS && prev->type<=T_ASSIGN))) {
-                            
-                            dynamic_cast<Minus*>(token)->set_unar();
-                        }
                     default: break;
                 }
                 return word==token_to_word(token);

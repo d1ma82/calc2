@@ -4,7 +4,7 @@ static int priority(Token* token) {
     
     switch (token->type) {
         case T_PLUS:    return 3;
-        case T_MINUS:   return dynamic_cast<Minus*>(token)->is_unar()? 1: 3;   
+        case T_MINUS:   return dynamic_cast<OperatorToken*>(token)->is_unar()? 1: 3;   
         case T_PRODUCT: return 2;   
         case T_DIV:     return 2;
         case T_ASSIGN:  return 4;
@@ -68,7 +68,8 @@ void Postfix::read() {
 
                 if (stack.empty()) stack.push(token);  
                 else if (old_priority>0 && old_priority<=curr_priority) { pop_if_lower(curr_priority); stack.push(token); } 
-                else stack.push(token); 
+                else stack.push(token);
+            default: break; 
         }
         *input>>token;
     }

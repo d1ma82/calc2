@@ -6,7 +6,7 @@
 
 class VecrtorSize: public std::exception {};
 
-enum Type {T_CONST, T_VECTOR, T_VAR, T_PLUS, T_MINUS, T_PRODUCT, T_DIV, T_ASSIGN, T_OP, T_CP, T_EOEQ};
+enum Type {T_UNDEF, T_CONST, T_VECTOR, T_VAR, T_PLUS, T_MINUS, T_PRODUCT, T_DIV, T_ASSIGN, T_OP, T_CP, T_EOEQ};
 
 class Token {
 public:
@@ -39,7 +39,6 @@ class OperatorToken: public Token {
 public:
     virtual ~OperatorToken() = default;
     char get() const    { return symbol; }
-    void set_unar()     { unar=true; }
     bool is_unar() const { return unar; }
     const char* str() { snprintf(buf, 16, "%c%c%s%c", symbol, '\t', (unar? "unar":""), '\0'); return buf; }
 protected:
@@ -107,6 +106,7 @@ public:
 class Minus: public OperatorToken {
 public:
     Minus() { type= T_MINUS; symbol='-'; }
+    Minus(bool unar):Minus() { this->unar=unar; }
 };
 
 class Multiply: public OperatorToken {

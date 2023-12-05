@@ -15,7 +15,7 @@ class Quit: public std::exception {};
 
 class TokenStream: public Stream {
 public:
-    TokenStream(std::istream& istr): input{istr} {}
+    TokenStream(std::istream& istr): input{istr} { input.exceptions(std::ios_base::eofbit); }
     ~TokenStream() { clear(); }
 
     void read();
@@ -33,9 +33,10 @@ public:
         return *this; 
     };
 private:
+    Type prev;
     std::istream& input;
     const std::map<char, OperatorToken> operators {
-        {'+', Plus()}, {'-', Minus()}, 
+        {'+', Plus()}, {'-', Minus()}, {'u', Minus(true)}, 
         {'*', Multiply()}, {'/', Division()}, {'=', Assign()}
     };
     OpenParenthesis op;

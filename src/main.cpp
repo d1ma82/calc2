@@ -68,6 +68,7 @@ static void loop() {
         catch (SyntaxException) { ret = -2; }
         catch (InvalidToken) { ret = -3; }
         catch (VecrtorSize) { ret = -4; }
+        catch (std::istream::failure) { ret=0; return; }
         catch (std::exception const &e) {
             LOGE("%s", e.what())
             ret = -10;
